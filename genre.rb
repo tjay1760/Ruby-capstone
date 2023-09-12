@@ -1,10 +1,8 @@
-# frozen_string_literal: true
-
 class Genre
   attr_accessor :name, :items
 
-  def initialize(id, name = '')
-    @id = id
+  def initialize(name = '')
+    @id = Random.rand(10000)
     @name = name
     @items = []
   end

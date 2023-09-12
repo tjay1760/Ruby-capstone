@@ -1,28 +1,37 @@
-# frozen_string_literal: true
-
 class App
   def initialize
     @books = []
     @music_albums = []
     @movies = []
     @games = []
+    @genres = []
 
+    @genre_mngr = GenreMngr.new
+    @album_mngr = AlbumMngr.new
     @choice_list = {
       '1' => 'List all Books',
       '2' => 'List all Music Albums',
-      '3' => 'List all Movies',
-      '4' => 'List all Games',
-      '5' => 'List all Genres',
-      '6' => 'List all Labels',
-      '7' => 'List all Authors',
-      '8' => 'List all Sources',
-      '9' => 'Add a Book',
-      '10' => 'Add a Music Album',
-      '11' => 'Add a Movie',
-      '12' => 'Add a Game',
-      '13' => 'Exit'
+      '3' => 'List all Genres',
+      '4' => 'List all Labels',
+      '5' => 'List all Authors',
+      '6' => 'List all Sources',
+      '7' => 'Add a Book',
+      '8' => 'Add a Music Album',
+      '9' => 'Exit'
     }
   end
+
+  ACTION_MAP = {
+    '1' => :list_books,
+    '2' => :list_music_albums,
+    '3' => :list_genres,
+    '4' => :list_labels,
+    '5' => :list_authors,
+    '6' => :list_sources,
+    '7' => :add_book,
+    '8' => :add_music_album,
+    '9' => :exit_app
+  }.freeze
 
   def start_app
     loop do
@@ -31,47 +40,21 @@ class App
         puts "#{key} - #{value}"
       end
       option = gets.chomp
-      if option == '13'
-        puts 'Thank you for using this app'
-        break
-      end
+      break if choose_option(option) == false
+
       choose_option(option)
     end
   end
 
   def exit_app
     puts 'Thank you for using this app'
+    false
   end
 
   def choose_option(option)
-    case option
-    when '1'
-      list_books
-    when '2'
-      list_music_albums
-    when '3'
-      list_movies
-    when '4'
-      list_games
-    when '5'
-      list_genres
-    when '6'
-      list_labels
-    when '7'
-      list_authors
-    when '8'
-      list_sources
-    when '9'
-      add_book
-    when '10'
-      add_music_album
-    when '11'
-      add_movie
-    when '12'
-      add_game
-    when '13'
-      exit_app
-      false
+    action = ACTION_MAP[option]
+    if action
+      send(action)
     else
       puts 'Invalid option'
     end
@@ -83,18 +66,24 @@ class App
 
   def list_music_albums
     puts 'Listing Music Albums'
-  end
-
-  def list_movies
-    puts 'Listing Movies'
-  end
-
-  def list_games
-    puts 'Listing Games'
+    if @music_albums.length.zero?
+      puts 'No music Album to disply'
+    else
+      @music_albums.each do |album|
+        puts album.name
+      end
   end
 
   def list_genres
     puts 'Listing Genres'
+
+    if @genres.length.zero?
+      puts "No genres to display"
+    else
+      @genres.each do |genre|
+        puts genre.name
+      end
+    end
   end
 
   def list_labels
@@ -115,13 +104,10 @@ class App
 
   def add_music_album
     puts 'Adding a Music Album'
-  end
-
-  def add_movie
-    puts 'Adding a Movie'
-  end
-
-  def add_game
-    puts 'Adding a Game'
+    puts "Enter the name of the Album: "
+    print '>> '
+    title = gets.chomp
+    album = MusicAlbum.new
+    @albums.push(album)
   end
 end

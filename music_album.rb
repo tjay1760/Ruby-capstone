@@ -1,8 +1,7 @@
-# frozen_string_literal: true
-
 require_relative 'item'
 class MusicAlbum < Item
   def initialize(on_spotify: false)
+    super()
     @on_spotify = on_spotify
   end
 
