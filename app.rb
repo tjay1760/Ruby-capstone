@@ -4,7 +4,10 @@ class App
     @music_albums = []
     @movies = []
     @games = []
+    @genres = []
 
+    @genre_mngr = GenreMngr.new
+    @album_mngr = AlbumMngr.new
     @choice_list = {
       '1' => 'List all Books',
       '2' => 'List all Music Albums',
@@ -63,10 +66,24 @@ class App
 
   def list_music_albums
     puts 'Listing Music Albums'
+    if @music_albums.length.zero?
+      puts 'No music Album to disply'
+    else
+      @music_albums.each do |album|
+        puts album.name
+      end
   end
 
   def list_genres
     puts 'Listing Genres'
+
+    if @genres.length.zero?
+      puts "No genres to display"
+    else
+      @genres.each do |genre|
+        puts genre.name
+      end
+    end
   end
 
   def list_labels
@@ -87,5 +104,10 @@ class App
 
   def add_music_album
     puts 'Adding a Music Album'
+    puts "Enter the name of the Album: "
+    print '>> '
+    title = gets.chomp
+    album = MusicAlbum.new
+    @albums.push(album)
   end
 end
