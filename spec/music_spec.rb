@@ -7,9 +7,4 @@ describe MusicAlbum do
             expect(music).to be_instance_of(MusicAlbum)
         end
     end
-
-    contet "When adding a genre to a music" do
-        it "" do
-        end
-    end
 end
