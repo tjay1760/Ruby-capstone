@@ -8,10 +8,6 @@ describe MusicAlbum do
         end
     end
 
-    contect "when Archiving a music" do
-        it "" do
-        end
-
     contet "When adding a genre to a music" do
         it "" do
         end
