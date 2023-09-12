@@ -6,7 +6,6 @@ class App
     @games = []
     @genres = []
 
-    
     @choice_list = {
       '1' => 'List all Books',
       '2' => 'List all Music Albums',
