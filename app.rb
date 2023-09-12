@@ -18,6 +18,18 @@ class App
     }
   end
 
+  ACTION_MAP = {
+    '1' => :list_books,
+    '2' => :list_music_albums,
+    '3' => :list_genres,
+    '4' => :list_labels,
+    '5' => :list_authors,
+    '6' => :list_sources,
+    '7' => :add_book,
+    '8' => :add_music_album,
+    '9' => :exit_app
+  }.freeze
+
   def start_app
     loop do
       puts 'Welcome to the catalog of your things'
@@ -26,34 +38,20 @@ class App
       end
       option = gets.chomp
       break if choose_option(option) == false
+
+      choose_option(option)
     end
   end
 
   def exit_app
     puts 'Thank you for using this app'
+    false
   end
 
   def choose_option(option)
-    case option
-    when '1'
-      list_books
-    when '2'
-      list_music_albums
-    when '3'
-      list_genres
-    when '4'
-      list_labels
-    when '5'
-      list_authors
-    when '6'
-      list_sources
-    when '7'
-      add_book
-    when '8'
-      add_music_album
-    when '9'
-      exit_app
-      false
+    action = ACTION_MAP[option]
+    if action
+      send(action)
     else
       puts 'Invalid option'
     end
