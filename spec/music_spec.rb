@@ -1,4 +1,4 @@
-require '../genre'
+require_relative '../genre'
 
 describe MusicAlbum do
   context 'When creating new music' do

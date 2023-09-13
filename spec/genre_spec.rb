@@ -1,5 +1,5 @@
-require '../genre'
-require '../item'
+require_relative '../genre'
+require_relative '../item'
 
 describe Genre do
   genre = Genre.new(1, 'rap')

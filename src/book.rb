@@ -1,7 +1,7 @@
 require_relative '../item'
 require_relative 'label'
 
-class Book < Items
+class Book < Item
   attr_accessor :publisher, :cover_state
 
   def initialize(cover_state, publisher, publish_date, id = nil)
