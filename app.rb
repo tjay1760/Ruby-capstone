@@ -52,10 +52,10 @@ class App
 
   def exit_app
     saver = Saver.new
-    saver.save_author(@authors)
-    saver.save_game(@games)
-    saver.save_genre(@genres)
-    saver.save_music(@music_albums)
+    saver.save_author(@authors) if @authors.length.positive?
+    saver.save_game(@games) if @games.length.positive?
+    saver.save_genre(@genres) if @genres.length.positive?
+    saver.save_music(@music_albums) if @music_albums.length.positive?
     puts 'Thank you for using this app'
     false
   end
@@ -222,6 +222,6 @@ class Saver
     authors.each do |author|
       json_object.push(@serializer.serialise_author(author))
     end
-    File.write('game.json', json_object.to_json)
+    File.write('author.json', json_object.to_json)
   end
 end
