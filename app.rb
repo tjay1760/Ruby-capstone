@@ -147,3 +147,44 @@ class App
     puts "New music created"
   end
 end
+
+class Serializer
+  def serialize_author
+  end
+
+  def serialize_game
+  end
+
+  def serialise_music(music)
+    {
+      publish_date: music.publish_date
+      on_spotify: music.on_spotify
+    }
+  end
+
+  def serialize_genre(genre)
+    {
+      name: genre.name
+    }
+  end
+end
+
+class Saver
+  def initialize
+    @serializer = Serializer.new
+  end
+  def save_music(genres)
+    json_object = []
+    musics.each do |music|
+      json_object.push(@serializer.serialise_music(music))
+    end
+    File.write('music.json', json_object.to_json)
+  end
+  def save_genre(genres)
+    json_object = []
+    genres.each do |genre|
+      json_object.push(@serializer.serialise_genre(genre))
+    end
+    File.write('genre.json', json_object.to_json)
+  end
+end
