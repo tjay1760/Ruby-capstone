@@ -1,0 +1,6 @@
+CREATE TABLE genre (id SERIAL PRIMARY KEY, name VARCHAR(255) NOT NULL);
+CREATE TABLE author(id SERIAL PRIMARY KEY, first_name VARCHAR(255) NOT NULL, last_name VARCHAR(255) NOT NULL);
+CREATE TABLE game(id SERIAL PRIMARY KEY, publish_date DATE NOT NULL, archived BOOLEAN NOT NULL, multiplayer BOOLEAN NOT NULL, last_played_at DATE NOT NULL, genre_id INT NOT NULL, author_id INT NOT NULL, label_id INT NULL, source_
+id INT NOT NULL);
+ALTER TABLE author ADD COLUMN game_id INTEGER;
+ALTER TABLE author ADD CONSTRAINT fk_game FOREIGN KEY (game_id) REFERENCES game(id);
