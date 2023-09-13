@@ -5,6 +5,7 @@ class App
     @movies = []
     @games = []
     @genres = []
+    @authors = []
 
     @choice_list = {
       '1' => 'List all Books',
@@ -60,13 +61,24 @@ class App
     puts 'Listing Books'
   end
 
+  def list_games
+    puts 'Listing Games'
+    if @games.empty?
+      puts 'No Games to display'
+    else
+      @games.each do |game|
+        puts "Publish date: #{game.publish_date}, #{game.multiplayer ? "multiplayer" : "single player"}, Last played at: #{game.last_played_at}"
+      end
+    end
+  end
+
   def list_music_albums
     puts 'Listing Music Albums'
     if @music_albums.empty?
       puts 'No music Album to display'
     else
       @music_albums.each do |album|
-        puts album.name
+        puts "Published at: #{album.publish_date}, #{album.on_spotify ? 'On Spotify' : 'Not on Spotify'}"
       end
     end
   end
@@ -89,6 +101,13 @@ class App
 
   def list_authors
     puts 'Listing Authors'
+    if @authors.empty?
+      puts 'No author to display'
+    else
+      @authors.each do |author|
+        puts "#{author.first_name} - #{author.last_name}"
+      end
+    end
   end
 
   def list_sources
@@ -99,12 +118,32 @@ class App
     puts 'Adding a Book'
   end
 
+  def add_game
+    puts 'Adding a Game'
+    puts 'Published on Which date (format YYYY-MM-DD)'
+    print '>> '
+    date = gets.chomp
+    puts 'Is it multiplayer? (Y/N)'
+    print '>> '
+    multiplayer = gets.chomp
+    puts 'Was last playet on which date? (format YYYY-MM-DD)'
+    print '>> '
+    last_played = gets.chomp
+    game = Game.new(date, multiplayer == 'Y' ? true : false, last_played)
+    @games.push(game)
+    puts "New game created"
+  end
+
   def add_music_album
     puts 'Adding a Music Album'
-    puts 'Enter the name of the Album: '
+    puts 'Enter the published date:'
     print '>> '
-    title = gets.chomp
-    album = MusicAlbum.new(title)
+    date = gets.chomp
+    puts 'Is it on Spotify? (y/n)'
+    print '>> '
+    on_spotify = gets.chomp
+    album = MusicAlbum.new(date, on_spotify == 'y' ? true : false)
     @music_albums.push(album)
+    puts "New music created"
   end
 end
