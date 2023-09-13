@@ -3,7 +3,7 @@ require_relative '../item'
 
 describe Author do
   author = Author.new('Ben', 'Mak')
-  item = Item.new
+  item = Item.new('2029-10-01')
 
   context 'When creating an author' do
     it 'Should have the right properties' do
@@ -12,10 +12,10 @@ describe Author do
     end
   end
 
-  context 'When adding an Item' do
-    it 'should add to item list' do
+  context 'When adding an item' do
+    it 'Should be add author to the item' do
       author.add_item(item)
-      expect(item.author.first_name).to eq('Ben')
+      expect(item.author).to eq(author)
     end
   end
 end

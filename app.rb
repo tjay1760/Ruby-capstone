@@ -1,8 +1,13 @@
+require './author'
+require './game'
+require './genre'
+require './item'
+require './music_album'
+
 class App
   def initialize
     @books = []
     @music_albums = []
-    @movies = []
     @games = []
     @genres = []
     @authors = []
@@ -13,10 +18,11 @@ class App
       '3' => 'List all Genres',
       '4' => 'List all Labels',
       '5' => 'List all Authors',
-      '6' => 'List all Sources',
+      '6' => 'List all Games',
       '7' => 'Add a Book',
-      '8' => 'Add a Music Album',
-      '9' => 'Exit'
+      '8' => 'Add a Game',
+      '9' => 'Add a Music Album',
+      '0' => 'Exit'
     }
   end
 
@@ -26,10 +32,11 @@ class App
     '3' => :list_genres,
     '4' => :list_labels,
     '5' => :list_authors,
-    '6' => :list_sources,
+    '6' => :list_games,
     '7' => :add_book,
-    '8' => :add_music_album,
-    '9' => :exit_app
+    '8' => :add_game,
+    '9' => :add_music_album,
+    '0' => :exit_app
   }.freeze
 
   def start_app
@@ -44,6 +51,11 @@ class App
   end
 
   def exit_app
+    saver = Saver.new
+    saver.save_author(@authors) if @authors.length.positive?
+    saver.save_game(@games) if @games.length.positive?
+    saver.save_genre(@genres) if @genres.length.positive?
+    saver.save_music(@music_albums) if @music_albums.length.positive?
     puts 'Thank you for using this app'
     false
   end
@@ -111,10 +123,6 @@ class App
     end
   end
 
-  def list_sources
-    puts 'Listing Sources'
-  end
-
   def add_book
     puts 'Adding a Book'
   end
@@ -124,13 +132,14 @@ class App
     puts 'Published on Which date (format YYYY-MM-DD)'
     print '>> '
     date = gets.chomp
-    puts 'Is it multiplayer? (Y/N)'
+    puts 'Is it multiplayer? (y/n)'
     print '>> '
     multiplayer = gets.chomp
     puts 'Was last playet on which date? (format YYYY-MM-DD)'
     print '>> '
     last_played = gets.chomp
-    game = Game.new(date, multiplayer == 'Y', last_played)
+    puts multiplayer == 'y'
+    game = Game.new(date, multiplayer == 'y', last_played)
     @games.push(game)
     puts 'New game created'
   end
@@ -150,9 +159,20 @@ class App
 end
 
 class Serializer
-  def serialize_author; end
+  def serialize_author(author)
+    {
+      first_name: author.first_name,
+      last_name: author.last_name
+    }
+  end
 
-  def serialize_game; end
+  def serialize_game(game)
+    {
+      publish_date: game.publish_date,
+      multiplayer: game.multiplayer,
+      last_played: game.last_played
+    }
+  end
 
   def serialise_music(music)
     {
@@ -173,7 +193,7 @@ class Saver
     @serializer = Serializer.new
   end
 
-  def save_music(_genres)
+  def save_music(musics)
     json_object = []
     musics.each do |music|
       json_object.push(@serializer.serialise_music(music))
@@ -187,5 +207,21 @@ class Saver
       json_object.push(@serializer.serialise_genre(genre))
     end
     File.write('genre.json', json_object.to_json)
+  end
+
+  def save_game(games)
+    json_object = []
+    games.each do |game|
+      json_object.push(@serializer.serialise_game(game))
+    end
+    File.write('game.json', json_object.to_json)
+  end
+
+  def save_author(authors)
+    json_object = []
+    authors.each do |author|
+      json_object.push(@serializer.serialise_author(author))
+    end
+    File.write('author.json', json_object.to_json)
   end
 end
