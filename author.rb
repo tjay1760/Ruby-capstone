@@ -1,5 +1,5 @@
 class Author
-  attr_Accessor :first_name, :last_name
+  attr_accessor :first_name, :last_name
 
   def initialize(first_name, last_name)
     @id = Random.rand(1000)
