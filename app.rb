@@ -67,7 +67,8 @@ class App
       puts 'No Games to display'
     else
       @games.each do |game|
-        puts "Publish date: #{game.publish_date}, #{game.multiplayer ? "multiplayer" : "single player"}, Last played at: #{game.last_played_at}"
+        puts "Published: #{game.publish_date}, #{game.multiplayer ? 'multiplayer' : 'single player'}"
+        puts "Last played: #{game.last_played_at}"
       end
     end
   end
@@ -129,9 +130,9 @@ class App
     puts 'Was last playet on which date? (format YYYY-MM-DD)'
     print '>> '
     last_played = gets.chomp
-    game = Game.new(date, multiplayer == 'Y' ? true : false, last_played)
+    game = Game.new(date, multiplayer == 'Y', last_played)
     @games.push(game)
-    puts "New game created"
+    puts 'New game created'
   end
 
   def add_music_album
@@ -142,22 +143,20 @@ class App
     puts 'Is it on Spotify? (y/n)'
     print '>> '
     on_spotify = gets.chomp
-    album = MusicAlbum.new(date, on_spotify == 'y' ? true : false)
+    album = MusicAlbum.new(date, on_spotify == 'y')
     @music_albums.push(album)
-    puts "New music created"
+    puts 'New music created'
   end
 end
 
 class Serializer
-  def serialize_author
-  end
+  def serialize_author; end
 
-  def serialize_game
-  end
+  def serialize_game; end
 
   def serialise_music(music)
     {
-      publish_date: music.publish_date
+      publish_date: music.publish_date,
       on_spotify: music.on_spotify
     }
   end
@@ -173,13 +172,15 @@ class Saver
   def initialize
     @serializer = Serializer.new
   end
-  def save_music(genres)
+
+  def save_music(_genres)
     json_object = []
     musics.each do |music|
       json_object.push(@serializer.serialise_music(music))
     end
     File.write('music.json', json_object.to_json)
   end
+
   def save_genre(genres)
     json_object = []
     genres.each do |genre|
