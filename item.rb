@@ -1,12 +1,8 @@
 class Item
   attr_accessor :genre, :author, :label, :publish_date
 
-  def initialize(publish_date, archived: false)
-    @id = Random.rand(1..1000)
-    @genre = []
-    @author = nil
-    @source = []
-    @label = []
+  def initialize(publish_date, id = nil, archived: false)
+    @id = id || rand(1_000_000)
     @publish_date = publish_date
     @archived = archived
   end
