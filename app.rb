@@ -3,7 +3,8 @@ require './game'
 require './genre'
 require './item'
 require './music_album'
-
+require_relative 'src/create_book'
+require_relative 'src/list_labels'
 class App
   def initialize
     @books = []
@@ -70,7 +71,13 @@ class App
   end
 
   def list_books
-    puts 'Listing Books'
+    if @books.empty?
+      puts 'No books Available'
+    else
+      @books.each_with_index do |book, index|
+        puts "\n[#{index + 1}] The book: #{book.label.title} has been published in #{book.publish_date}"
+      end
+    end
   end
 
   def list_games
@@ -109,7 +116,8 @@ class App
   end
 
   def list_labels
-    puts 'Listing Labels'
+    new_list = ListLabelHandler.new(@books, @music_albums, @games)
+    new_list.handle
   end
 
   def list_authors
@@ -124,7 +132,8 @@ class App
   end
 
   def add_book
-    puts 'Adding a Book'
+    input_data = InputData.new
+    @books << input_data.add_book
   end
 
   def add_game
@@ -170,11 +179,11 @@ class Serializer
     {
       publish_date: game.publish_date,
       multiplayer: game.multiplayer,
-      last_played: game.last_played
+      last_played: game.last_played_at
     }
   end
 
-  def serialise_music(music)
+  def serialize_music(music)
     {
       publish_date: music.publish_date,
       on_spotify: music.on_spotify
@@ -196,31 +205,31 @@ class Saver
   def save_music(musics)
     json_object = []
     musics.each do |music|
-      json_object.push(@serializer.serialise_music(music))
+      json_object.push(@serializer.serialize_music(music))
     end
-    File.write('music.json', json_object.to_json)
+    File.write('music.json', { music: json_object }.to_json)
   end
 
   def save_genre(genres)
     json_object = []
     genres.each do |genre|
-      json_object.push(@serializer.serialise_genre(genre))
+      json_object.push(@serializer.serialize_genre(genre))
     end
-    File.write('genre.json', json_object.to_json)
+    File.write('genre.json', { genre: json_object }.to_json)
   end
 
   def save_game(games)
     json_object = []
     games.each do |game|
-      json_object.push(@serializer.serialise_game(game))
+      json_object.push(@serializer.serialize_game(game))
     end
-    File.write('game.json', json_object.to_json)
+    File.write('game.json', { games: json_object }.to_json)
   end
 
   def save_author(authors)
     json_object = []
     authors.each do |author|
-      json_object.push(@serializer.serialise_author(author))
+      json_object.push(@serializer.serialize_author(author))
     end
     File.write('author.json', json_object.to_json)
   end
