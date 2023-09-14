@@ -36,7 +36,7 @@ class InputData
   end
 
   def book_details
-    print "Publisher Name:"
+    print 'Publisher Name:'
     publisher = gets.chomp
     book_date = get_year("What's the publishing [year]")
     print "What's the cover state of the book? [good/bad] "
