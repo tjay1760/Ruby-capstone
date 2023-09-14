@@ -17,16 +17,17 @@ describe Book do
       expect(book.publish_date).to eq(Date.parse('2023-09-13'))
     end
   end
+
   describe 'can_be_archived?' do
     it 'should return true' do
-      book = Book.new('Bed of Procustees', 'Nassim Taleb', 2003)
+      book = Book.new('Bed of Procustees', 'Nassim Taleb', Date.parse('2003-01-01'))
       expect(book.send(:can_be_archived?)).to be true
     end
   end
 
   describe 'can_be_archived?' do
     it 'should return false' do
-      book = Book.new('good', 'Wyclife Jennings', 2021)
+      book = Book.new('good', 'Wyclife Jennings', Date.parse('2021-01-01'))
       expect(book.send(:can_be_archived?)).to be false
     end
   end

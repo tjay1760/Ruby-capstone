@@ -6,11 +6,11 @@ class InputData
     @books = []
   end
 
-  def get_year(msg)
-    puts msg
+  def book_year
+    puts 'Enter Publication Year: '
     year = gets.chomp.to_i
-    while year < 1 || year > 2500
-      puts msg
+    while year < 1 || year > Time.now.year
+      puts 'Please enter valid year'
       year = gets.chomp.to_i
     end
     year
@@ -38,7 +38,7 @@ class InputData
   def book_details
     print 'Publisher Name:'
     publisher = gets.chomp
-    book_date = get_year("What's the publishing [year]")
+    book_date = book_year
     print "What's the cover state of the book? [good/bad] "
     cover_state = gets.chomp.downcase
     [cover_state, publisher, book_date]

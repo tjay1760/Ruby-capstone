@@ -22,12 +22,7 @@ class BookSaver
   end
 
   def save_books
-    existing_data = if File.exist?('./books.json')
-                      JSON.parse(File.read('./books.json'))
-                    else
-
-                      []
-                    end
+    existing_data = []
     @books.each do |book|
       existing_data << {
         publish_date: book.publish_date,
