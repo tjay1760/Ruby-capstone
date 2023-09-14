@@ -64,5 +64,16 @@
       "id": 480085354,
       "color": "green"
     }
+  },
+  {
+    "publish_date": 2019,
+    "cover_state": "good",
+    "publisher": "JK Rowling",
+    "id": 6568,
+    "label": {
+      "title": "Fantastic Beasts",
+      "id": 139095325,
+      "color": "Blue"
+    }
   }
 ]

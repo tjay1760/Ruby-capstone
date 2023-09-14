@@ -1,3 +1,4 @@
+require 'json'
 require './author'
 require './game'
 require './genre'
@@ -40,13 +41,16 @@ class App
     '9' => :add_music_album,
     '0' => :exit_app
   }.freeze
-  def load_books
+  def load_files
     load_books = BookSaver.new(@Books)
     @books = load_books.parse_books
+    loader = Loader.new
+    loader.load_game(@games, @authors)
+    loader.load_music(@music_albums, @genres)
   end
 
   def start_app
-    load_books
+    load_files
     loop do
       puts 'Welcome to the catalog of your things'
       @choice_list.each do |key, value|
@@ -59,11 +63,9 @@ class App
 
   def exit_app
     saver = Saver.new
-    saver.save_author(@authors) if @authors.length.positive?
     savebook = BookSaver.new(@books)
     savebook.save_books
     saver.save_game(@games) if @games.length.positive?
-    saver.save_genre(@genres) if @genres.length.positive?
     saver.save_music(@music_albums) if @music_albums.length.positive?
     puts 'Thank you for using this app'
     false
@@ -95,7 +97,7 @@ class App
     else
       @games.each do |game|
         puts "Published: #{game.publish_date}, #{game.multiplayer ? 'multiplayer' : 'single player'}"
-        puts "Last played: #{game.last_played_at}"
+        puts "Last played: #{game.last_played_at} \n\n"
       end
     end
   end
@@ -106,6 +108,7 @@ class App
     else
       @music_albums.each do |album|
         puts "Published at: #{album.publish_date}, #{album.on_spotify ? 'On Spotify' : 'Not on Spotify'}"
+        puts "genre: #{album.genre.name} \n\n"
       end
     end
   end
@@ -144,62 +147,36 @@ class App
   end
 
   def add_game
-    puts 'Adding a Game'
-    puts 'Published on Which date (format YYYY-MM-DD)'
-    print '>> '
-    date = gets.chomp
-    puts 'Is it multiplayer? (y/n)'
-    print '>> '
-    multiplayer = gets.chomp
-    puts 'Was last playet on which date? (format YYYY-MM-DD)'
-    print '>> '
-    last_played = gets.chomp
-    puts multiplayer == 'y'
-    game = Game.new(date, multiplayer == 'y', last_played)
-    @games.push(game)
-    puts 'New game created'
+    adder = GameAdder.new
+    adder.add_game(@games, @authors)
   end
 
   def add_music_album
-    puts 'Adding a Music Album'
-    puts 'Enter the published date:'
-    print '>> '
-    date = gets.chomp
-    puts 'Is it on Spotify? (y/n)'
-    print '>> '
-    on_spotify = gets.chomp
-    album = MusicAlbum.new(date, on_spotify == 'y')
-    @music_albums.push(album)
-    puts 'New music created'
+    adder = MusicAdder.new
+    adder.add_music_album(@music_albums, @genres)
   end
 end
 
 class Serializer
-  def serialize_author(author)
-    {
-      first_name: author.first_name,
-      last_name: author.last_name
-    }
-  end
-
   def serialize_game(game)
     {
       publish_date: game.publish_date,
       multiplayer: game.multiplayer,
-      last_played: game.last_played_at
+      last_played: game.last_played_at,
+      author: {
+        first_name: game.author.first_name,
+        last_name: game.author.last_name
+      }
     }
   end
 
   def serialize_music(music)
     {
       publish_date: music.publish_date,
-      on_spotify: music.on_spotify
-    }
-  end
-
-  def serialize_genre(genre)
-    {
-      name: genre.name
+      on_spotify: music.on_spotify,
+      genre: {
+        name: music.genre.name
+      }
     }
   end
 end
@@ -214,15 +191,7 @@ class Saver
     musics.each do |music|
       json_object.push(@serializer.serialize_music(music))
     end
-    File.write('music.json', { music: json_object }.to_json)
-  end
-
-  def save_genre(genres)
-    json_object = []
-    genres.each do |genre|
-      json_object.push(@serializer.serialize_genre(genre))
-    end
-    File.write('genre.json', { genre: json_object }.to_json)
+    File.write('music.json', json_object.to_json)
   end
 
   def save_game(games)
@@ -230,14 +199,34 @@ class Saver
     games.each do |game|
       json_object.push(@serializer.serialize_game(game))
     end
-    File.write('game.json', { games: json_object }.to_json)
+    File.write('game.json', json_object.to_json)
+  end
+end
+
+class Loader
+  def load_music(music_albums, genres)
+    return unless File.exist?('music.json')
+
+    json_music = File.empty?('music.json') ? [] : File.read('music.json')
+    JSON.parse(json_music).map do |music|
+      album = MusicAlbum.new(music['publish_date'], music['on_spotify'])
+      genre = Genre.new(music['genre']['name'])
+      genre.add_item(album)
+      music_albums.push(album)
+      genres.push(genre)
+    end
   end
 
-  def save_author(authors)
-    json_object = []
-    authors.each do |author|
-      json_object.push(@serializer.serialize_author(author))
+  def load_game(games, authors)
+    return unless File.exist?('game.json')
+
+    json_game = File.empty?('game.json') ? [] : File.read('game.json')
+    JSON.parse(json_game).map do |game|
+      new_game = Game.new(game['publish_date'], game['multiplayer'], game['last_played'])
+      author = Author.new(game['author']['first_name'], game['author']['last_name'])
+      author.add_item(new_game)
+      games.push(new_game)
+      authors.push(author)
     end
-    File.write('author.json', json_object.to_json)
   end
 end
