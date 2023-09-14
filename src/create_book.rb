@@ -30,16 +30,15 @@ class InputData
   def label_details
     print 'Enter Title of the Book: '
     label_title = gets.chomp
-    print 'Type the color of the Book: '
+    print 'Color of the Book: '
     label_color = gets.chomp
     [label_title, label_color]
   end
 
   def book_details
-    print "\nWhat's the name of the publisher?"
-    print "\nAnswer: "
+    print "Publisher Name:"
     publisher = gets.chomp
-    book_date = get_year("What's the publishing date? [year]")
+    book_date = get_year("What's the publishing [year]")
     print "What's the cover state of the book? [good/bad] "
     cover_state = gets.chomp.downcase
     [cover_state, publisher, book_date]

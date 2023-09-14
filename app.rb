@@ -5,6 +5,7 @@ require './item'
 require './music_album'
 require_relative 'src/create_book'
 require_relative 'src/list_labels'
+require_relative 'src/book_saver'
 class App
   def initialize
     @books = []
@@ -39,8 +40,13 @@ class App
     '9' => :add_music_album,
     '0' => :exit_app
   }.freeze
+  def load_books
+    load_books = BookSaver.new(@Books)
+    @books = load_books.parse_books
+  end
 
   def start_app
+    load_books
     loop do
       puts 'Welcome to the catalog of your things'
       @choice_list.each do |key, value|
@@ -54,6 +60,8 @@ class App
   def exit_app
     saver = Saver.new
     saver.save_author(@authors) if @authors.length.positive?
+    savebook = BookSaver.new(@books)
+    savebook.save_books
     saver.save_game(@games) if @games.length.positive?
     saver.save_genre(@genres) if @genres.length.positive?
     saver.save_music(@music_albums) if @music_albums.length.positive?
@@ -93,7 +101,6 @@ class App
   end
 
   def list_music_albums
-    puts 'Listing Music Albums'
     if @music_albums.empty?
       puts 'No music Album to display'
     else
