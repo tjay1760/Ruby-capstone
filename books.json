@@ -1,0 +1,101 @@
+[
+  {
+    "publish_date": 2003,
+    "cover_state": "good",
+    "publisher": "Maket watch",
+    "id": 231535,
+    "label": {
+      "title": "Lord of the Rings",
+      "id": 107210227,
+      "color": "red"
+    }
+  },
+  {
+    "publish_date": 2003,
+    "cover_state": "good",
+    "publisher": "Maket watch",
+    "id": 231535,
+    "label": {
+      "title": "Lord of the Rings",
+      "id": 107210227,
+      "color": "red"
+    }
+  },
+  {
+    "publish_date": 2003,
+    "cover_state": "good",
+    "publisher": "Watership",
+    "id": 421930,
+    "label": {
+      "title": "second",
+      "id": 868005131,
+      "color": "brown"
+    }
+  },
+  {
+    "publish_date": 2004,
+    "cover_state": "bad",
+    "publisher": "oreilly",
+    "id": 346355,
+    "label": {
+      "title": "programing in ruby",
+      "id": 876921981,
+      "color": "white"
+    }
+  },
+  {
+    "publish_date": 2004,
+    "cover_state": "good",
+    "publisher": "golang",
+    "id": 658537,
+    "label": {
+      "title": "the fourth element",
+      "id": 575851135,
+      "color": "white"
+    }
+  },
+  {
+    "publish_date": 2004,
+    "cover_state": "good",
+    "publisher": "rabbit",
+    "id": 69605,
+    "label": {
+      "title": "waterhip",
+      "id": 480085354,
+      "color": "green"
+    }
+  },
+  {
+    "publish_date": 2019,
+    "cover_state": "good",
+    "publisher": "JK Rowling",
+    "id": 6568,
+    "label": {
+      "title": "Fantastic Beasts",
+      "id": 139095325,
+      "color": "Blue"
+    }
+  },
+  {
+    "publish_date": 2020,
+    "cover_state": "bad",
+    "publisher": "rootle",
+    "id": 917459,
+    "label": {
+      "title": "great bus",
+      "id": 622180198,
+      "color": "master p"
+    }
+  },
+  {
+    "publish_date": 2000,
+    "cover_state": "good",
+    "publisher": "JKF",
+    "id": 472254,
+    "label": {
+      "title": "a man of the people",
+      "id": 700924171,
+      "color": "white"
+    }
+  }
+]
