@@ -75,5 +75,27 @@
       "id": 139095325,
       "color": "Blue"
     }
+  },
+  {
+    "publish_date": 2020,
+    "cover_state": "bad",
+    "publisher": "rootle",
+    "id": 917459,
+    "label": {
+      "title": "great bus",
+      "id": 622180198,
+      "color": "master p"
+    }
+  },
+  {
+    "publish_date": 2000,
+    "cover_state": "good",
+    "publisher": "JKF",
+    "id": 472254,
+    "label": {
+      "title": "a man of the people",
+      "id": 700924171,
+      "color": "white"
+    }
   }
 ]

@@ -25,5 +25,18 @@ describe Label do
     it 'has the label title' do
       expect(@label.color).to eq 'Red'
     end
+
+    # Adding the new test cases for the add_item method
+    describe '#add_item' do
+      it "should add the item to the label's items list" do
+        @label.add_item(@new_book)
+        expect(@label.items).to include(@new_book)
+      end
+
+      it "should set the item's label to the current label" do
+        @label.add_item(@new_book)
+        expect(@new_book.label).to eq(@label)
+      end
+    end
   end
 end
