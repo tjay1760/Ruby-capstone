@@ -32,7 +32,7 @@
 # 📖 Catalog of my things<a name="about-project"></a>
 
 \*_Catalog of my things_ is a console application where the user can create, list, save and load movies, books and music albums.
-For a quick video walkthrough of the project click [here](https://drive.google.com/file/d/1Gpsm7OXRcd7kfr47lNAHsJTFF0nywDP5/view?usp=sharing)
+For a quick video walkthrough of the project click [here](https://drive.google.com/file/d/1l6nXOTdfuusP7yPvGzAJJukjDMWh1UTT/view?usp=sharing)
 
 ## 🛠 Built With <a name="built-with"></a>
 
